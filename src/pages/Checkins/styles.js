@@ -1,7 +1,8 @@
 import styled from 'styled-components/native';
 import Button from '~/components/Button';
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
+  flex: 1;
   padding: 20px;
 `;
 
@@ -9,7 +10,9 @@ export const SubmitButton = styled(Button)`
   margin-bottom: 20px;
 `;
 
-export const CheckinList = styled.FlatList``;
+export const CheckinList = styled.FlatList.attrs({
+  showsVerticalScrollIndicator: false,
+})``;
 
 export const Checkin = styled.View`
   flex-direction: row;

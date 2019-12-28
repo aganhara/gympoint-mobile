@@ -1,6 +1,9 @@
-import React from 'react';
-
+import React, { useState, useEffect } from 'react';
+import { parseISO, formatRelative } from 'date-fns';
+import pt from 'date-fns/locale/pt-BR';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import api from '~/services/api';
 
 import Header from '~/components/Header';
 
@@ -14,7 +17,32 @@ import {
 } from './styles';
 
 export default function Checkins() {
-  const checkins = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 45, 16];
+  const id = 7;
+  const [checkins, setCheckins] = useState([]);
+
+  useEffect(() => {
+    async function loadCheckins() {
+      const response = await api.get(`/students/${id}/checkin`);
+
+      setCheckins(
+        response.data.map((checkin, index) => {
+          return {
+            ...checkin,
+            index,
+            formattedDate: formatRelative(
+              parseISO(checkin.created_at),
+              new Date(),
+              {
+                locale: pt,
+              }
+            ),
+          };
+        })
+      );
+    }
+    loadCheckins();
+  }, []);
+
   return (
     <>
       <Header />
@@ -22,11 +50,11 @@ export default function Checkins() {
         <SubmitButton onPress={() => {}}>Novo check-in</SubmitButton>
         <CheckinList
           data={checkins}
-          keyExtractor={item => String(item)}
+          keyExtractor={checkin => String(checkin.index)}
           renderItem={({ item }) => (
             <Checkin>
-              <Label>Check-in #{item}</Label>
-              <Time>Hoje às 14 horas</Time>
+              <Label>Check-in #{item.index + 1}</Label>
+              <Time>{item.formattedDate}</Time>
             </Checkin>
           )}
         />
