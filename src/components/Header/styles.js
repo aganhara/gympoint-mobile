@@ -1,10 +1,13 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  align-items: center;
-  height: 45px;
+  flex-direction: row;
+  flex: 1;
+  max-height: 50px;
   justify-content: center;
-  background: #fff;
+  align-items: center;
+  margin-right: ${props => (props.marginRight ? props.marginRight : 0)};
+  background-color: #fff;
 `;
 
 export const Logo = styled.Image``;

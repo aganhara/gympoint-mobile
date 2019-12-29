@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { withNavigationFocus } from 'react-navigation';
 import { parseISO, formatRelative } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
-
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import api from '~/services/api';
 
@@ -20,7 +19,7 @@ import {
   Question,
 } from './styles';
 
-export default function Help() {
+function Help({ navigation, isFocused }) {
   const [helpOrders, setHelpOrders] = useState([]);
   const id = 2;
 
@@ -33,7 +32,7 @@ export default function Help() {
           return {
             ...helpOrder,
             formattedCreationDate: formatRelative(
-              parseISO(helpOrder.createdAt),
+              parseISO(helpOrder.updatedAt),
               new Date(),
               { locale: pt }
             ),
@@ -42,17 +41,26 @@ export default function Help() {
       );
     }
     loadHelpRequests();
-  }, []);
+  }, [isFocused]);
   return (
     <>
-      <Header />
       <Container>
-        <SubmitButton onPress={() => {}}>Novo pedido de auxílio</SubmitButton>
+        <SubmitButton
+          onPress={() => {
+            navigation.navigate('NewHelp');
+          }}
+        >
+          Novo pedido de auxílio
+        </SubmitButton>
         <ListHelp
           data={helpOrders}
           keyExtractor={helpOrder => String(helpOrder.id)}
           renderItem={({ item: helpOrder }) => (
-            <HelpContainer onPress={() => {}}>
+            <HelpContainer
+              onPress={() => {
+                navigation.navigate('HelpOrderView', { helpOrder });
+              }}
+            >
               <HelpContainerWrap>
                 <HelpHeader>
                   <Ansewered answered={!!helpOrder.answer}>
@@ -73,8 +81,8 @@ export default function Help() {
 }
 
 Help.navigationOptions = {
-  tabBarLabel: 'Pedir ajuda',
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="live-help" size={20} color={tintColor} />
-  ),
+  headerTitle: <Header />,
+  headerLayoutPreset: 'center',
 };
+
+export default withNavigationFocus(Help);

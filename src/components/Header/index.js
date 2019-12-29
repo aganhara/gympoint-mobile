@@ -3,9 +3,9 @@ import logo from '~/assets/header-icon.png';
 
 import { Container, Logo } from './styles';
 
-export default function Header() {
+export default function Header({ marginRight }) {
   return (
-    <Container>
+    <Container marginRight={marginRight}>
       <Logo source={logo} />
     </Container>
   );

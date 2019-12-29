@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Alert } from 'react-native';
 import { parseISO, formatRelative } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -20,26 +21,32 @@ export default function Checkins() {
   const id = 7;
   const [checkins, setCheckins] = useState([]);
 
-  useEffect(() => {
-    async function loadCheckins() {
-      const response = await api.get(`/students/${id}/checkin`);
+  async function loadCheckins() {
+    const response = await api.get(`/students/${id}/checkin`);
 
-      setCheckins(
-        response.data.map((checkin, index) => {
-          return {
-            ...checkin,
-            index,
-            formattedDate: formatRelative(
-              parseISO(checkin.created_at),
-              new Date(),
-              {
-                locale: pt,
-              }
-            ),
-          };
-        })
-      );
-    }
+    setCheckins(
+      response.data.map((checkin, index) => {
+        return {
+          ...checkin,
+          index: response.data.length - (index + 1),
+          formattedDate: formatRelative(
+            parseISO(checkin.created_at),
+            new Date(),
+            {
+              locale: pt,
+            }
+          ),
+        };
+      })
+    );
+  }
+  async function handleNewCheckin() {
+    await api.post(`/students/${id}/checkin`);
+    Alert.alert('Sucesso', 'Novo check-in cadastrado com sucesso');
+    loadCheckins();
+  }
+
+  useEffect(() => {
     loadCheckins();
   }, []);
 
@@ -47,7 +54,7 @@ export default function Checkins() {
     <>
       <Header />
       <Container>
-        <SubmitButton onPress={() => {}}>Novo check-in</SubmitButton>
+        <SubmitButton onPress={handleNewCheckin}>Novo check-in</SubmitButton>
         <CheckinList
           data={checkins}
           keyExtractor={checkin => String(checkin.index)}
