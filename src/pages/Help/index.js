@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { withNavigationFocus } from 'react-navigation';
 import { parseISO, formatRelative } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
@@ -86,3 +87,11 @@ Help.navigationOptions = {
 };
 
 export default withNavigationFocus(Help);
+
+Help.propTypes = {
+  navigation: PropTypes.shape({
+    getParam: PropTypes.func,
+    navigate: PropTypes.func,
+  }).isRequired,
+  isFocused: PropTypes.bool.isRequired,
+};
