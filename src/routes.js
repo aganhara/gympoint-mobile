@@ -18,7 +18,19 @@ export default (signedIn = true) =>
         Sign: createSwitchNavigator({ SignIn }),
         App: createBottomTabNavigator(
           {
-            Checkins,
+            Checkins: createStackNavigator(
+              {
+                Checkins,
+              },
+              {
+                navigationOptions: {
+                  tabBarLabel: 'Check-ins',
+                  tabBarIcon: ({ tintColor }) => (
+                    <Icon name="add-location" size={20} color={tintColor} />
+                  ),
+                },
+              }
+            ),
             Help: createStackNavigator(
               {
                 Help,

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { parseISO, formatRelative } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import api from '~/services/api';
 
@@ -41,9 +40,13 @@ export default function Checkins() {
     );
   }
   async function handleNewCheckin() {
-    await api.post(`/students/${id}/checkin`);
-    Alert.alert('Sucesso', 'Novo check-in cadastrado com sucesso');
-    loadCheckins();
+    try {
+      await api.post(`/students/${id}/checkin`);
+      Alert.alert('Sucesso', 'Novo check-in cadastrado com sucesso');
+      loadCheckins();
+    } catch (err) {
+      Alert.alert('Erro', 'Não foi possivel cadastrar novo check-in');
+    }
   }
 
   useEffect(() => {
@@ -52,7 +55,6 @@ export default function Checkins() {
 
   return (
     <>
-      <Header />
       <Container>
         <SubmitButton onPress={handleNewCheckin}>Novo check-in</SubmitButton>
         <CheckinList
@@ -71,8 +73,6 @@ export default function Checkins() {
 }
 
 Checkins.navigationOptions = {
-  tabBarLabel: 'Check-ins',
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="add-location" size={20} color={tintColor} />
-  ),
+  headerTitle: <Header />,
+  headerLayoutPreset: 'center',
 };

@@ -36,7 +36,6 @@ export default function HelpOrderView({ navigation }) {
 
 HelpOrderView.navigationOptions = ({ navigation }) => ({
   headerTitle: <Header marginRight={44} />,
-  // headerLayoutPreset: 'center',
   headerLeft: () => (
     <TouchableOpacity
       onPress={() => {
