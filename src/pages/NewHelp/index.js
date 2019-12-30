@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -10,7 +11,7 @@ import Header from '~/components/Header';
 import { Container, Form, FormInput, SubmitButton } from './styles';
 
 export default function NewHelp({ navigation }) {
-  const id = 2;
+  const id = useSelector(state => state.student.id);
   const [question, setQuestion] = useState('');
 
   async function handleSubmit() {
