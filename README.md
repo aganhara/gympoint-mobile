@@ -1,3 +1,7 @@
+<div style="text-align: center">
+<img src="https://raw.githubusercontent.com/aganhara/gympoint-mobile/master/.github/gympoint-mobile.png">
+</div>
+
 # Gympoint - Mobile
 
 This applications is part of Rocketseat GoStack trainning.
