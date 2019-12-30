@@ -48,6 +48,7 @@ export default (signedIn = true) =>
             ),
           },
           {
+            resetOnBlur: true,
             tabBarOptions: {
               keyboardHidesTabBar: true,
               activeTintColor: '#EE4E62',

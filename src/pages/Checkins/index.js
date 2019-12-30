@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Alert } from 'react-native';
 import { parseISO, formatRelative } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
@@ -17,7 +18,8 @@ import {
 } from './styles';
 
 export default function Checkins() {
-  const id = 7;
+  const id = useSelector(state => state.student.id);
+
   const [checkins, setCheckins] = useState([]);
 
   async function loadCheckins() {
@@ -51,7 +53,7 @@ export default function Checkins() {
 
   useEffect(() => {
     loadCheckins();
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withNavigationFocus } from 'react-navigation';
 import { parseISO, formatRelative } from 'date-fns';
@@ -22,7 +23,8 @@ import {
 
 function Help({ navigation, isFocused }) {
   const [helpOrders, setHelpOrders] = useState([]);
-  const id = 2;
+
+  const id = useSelector(state => state.student.id);
 
   useEffect(() => {
     async function loadHelpRequests() {
@@ -42,7 +44,7 @@ function Help({ navigation, isFocused }) {
       );
     }
     loadHelpRequests();
-  }, [isFocused]);
+  }, [id, isFocused]);
   return (
     <>
       <Container>
