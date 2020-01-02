@@ -6,7 +6,7 @@
 
 This applications is part of Rocketseat GoStack trainning.
 
-**Important: This application was tested only in Android**
+**Important: This application has been tested on Android only.**
 
 To run this appllication execute the following command:
 
