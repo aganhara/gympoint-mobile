@@ -83,7 +83,9 @@ export default function Checkins() {
               <Time>{item.formattedDate}</Time>
             </Checkin>
           )}
-          ListFooterComponent={() => loading && <ActivityIndicator />}
+          ListFooterComponent={() =>
+            loading && <ActivityIndicator color="#ee4d64" />
+          }
         />
       </Container>
     </>

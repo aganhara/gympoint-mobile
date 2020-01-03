@@ -92,7 +92,9 @@ function Help({ navigation, isFocused }) {
           )}
           onEndReached={loadHelpRequests}
           onEndReachedThreshold={0.1}
-          ListFooterComponent={() => loading && <ActivityIndicator />}
+          ListFooterComponent={() =>
+            loading && <ActivityIndicator color="#ee4d64" />
+          }
         />
       </Container>
     </>
