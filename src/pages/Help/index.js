@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withNavigationFocus } from 'react-navigation';
@@ -23,28 +24,40 @@ import {
 
 function Help({ navigation, isFocused }) {
   const [helpOrders, setHelpOrders] = useState([]);
+  const itemsPerPage = 6;
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const id = useSelector(state => state.student.id);
 
-  useEffect(() => {
-    async function loadHelpRequests() {
-      const response = await api.get(`students/${id}/help-orders`);
+  async function loadHelpRequests() {
+    setLoading(true);
+    const response = await api.get(
+      `students/${id}/help-orders?per_page=${itemsPerPage}&page=${page}`
+    );
 
-      setHelpOrders(
-        response.data.map(helpOrder => {
-          return {
-            ...helpOrder,
-            formattedCreationDate: formatRelative(
-              parseISO(helpOrder.updatedAt),
-              new Date(),
-              { locale: pt }
-            ),
-          };
-        })
-      );
-    }
+    setHelpOrders([
+      ...helpOrders,
+      ...response.data.map(helpOrder => {
+        return {
+          ...helpOrder,
+          formattedCreationDate: formatRelative(
+            parseISO(helpOrder.updatedAt),
+            new Date(),
+            { locale: pt }
+          ),
+        };
+      }),
+    ]);
+
+    setPage(page + 1);
+    setLoading(false);
+  }
+
+  useEffect(() => {
     loadHelpRequests();
-  }, [id, isFocused]);
+  }, [id, isFocused]); // eslint-disable-line
+
   return (
     <>
       <Container>
@@ -77,6 +90,9 @@ function Help({ navigation, isFocused }) {
               </HelpContainerWrap>
             </HelpContainer>
           )}
+          onEndReached={loadHelpRequests}
+          onEndReachedThreshold={0.1}
+          ListFooterComponent={() => loading && <ActivityIndicator />}
         />
       </Container>
     </>
